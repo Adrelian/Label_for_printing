@@ -1,3 +1,6 @@
+import openpyxl
+
+
 def open_eplan_file():
     """
     Функция собирает все данные из txt файла с этикетками
@@ -6,7 +9,8 @@ def open_eplan_file():
     label = []  # пустой список для этикеток
     try:
         with open(
-                "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок/Наклейки на устройства.txt", "r") as all_label:
+                "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок/Наклейки на устройства.txt",
+                "r") as all_label:
             for item in all_label:
                 # исключить абзацы
                 if item != '\n':
@@ -42,7 +46,7 @@ def delete_fail_and_save_to_file(all_data):
         return False
 
 
-def save_to_file(label_for_print):
+def save_to_file_txt(label_for_print):
     if label_for_print:
         with open(
                 "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок/Наклейки на устройства.txt",
@@ -53,8 +57,19 @@ def save_to_file(label_for_print):
         print("Нет данных для записи в файл")
 
 
+def save_to_file_excel(label_for_print):
+    workbook = openpyxl.Workbook()  # Создаём новый файл Excel
+    sheet = workbook.active  # Выбираем активный лист, по умолчанию 1
+
+    # Записывам каждый элемент списка в новую строку
+    for i in range(len(label_for_print)):
+        sheet.cell(row=i + 1, column=1, value=label_for_print[i])
+
+    workbook.save(
+        "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок/Наклейки на устройства.xlsx")  # Сохраняем файл
+
+
 all_data_from_file = open_eplan_file()  # простыня с данными из файла
 uniq_label_for_printing = delete_fail_and_save_to_file(all_data_from_file)  # уникальные этикетки (готов)
-save_to_file(uniq_label_for_printing)
-
-
+# save_to_file_txt(uniq_label_for_printing)  # Сохранение в файл txt
+save_to_file_excel(uniq_label_for_printing) # Сохранение в файл Excel
