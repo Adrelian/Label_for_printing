@@ -1,4 +1,6 @@
 import openpyxl
+import os
+import zipfile
 
 
 def open_eplan_file():
@@ -58,18 +60,42 @@ def save_to_file_txt(label_for_print):
 
 
 def save_to_file_excel(label_for_print):
-    workbook = openpyxl.Workbook()  # Создаём новый файл Excel
-    sheet = workbook.active  # Выбираем активный лист, по умолчанию 1
+    """
+    Функция сохраняет полученный лист с ОУ устройств в файл Excel
+    :param label_for_print: лист с ОУ
+    :return:
+    """
+    try:
+        workbook = openpyxl.Workbook()  # Создаём новый файл Excel
+        sheet = workbook.active  # Выбираем активный лист, по умолчанию 1
 
-    # Записывам каждый элемент списка в новую строку
-    for i in range(len(label_for_print)):
-        sheet.cell(row=i + 1, column=1, value=label_for_print[i])
+        # Записывам каждый элемент списка в новую строку
+        for i in range(len(label_for_print)):
+            sheet.cell(row=i + 1, column=1, value=label_for_print[i])
 
-    workbook.save(
-        "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок/Наклейки на устройства.xlsx")  # Сохраняем файл
+        sheet.title = 'Наклейки для устройств'  # Изменить имя листа
+
+        # Сохраняем файл
+        workbook.save(
+            "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок/Наклейки на устройства.xlsx")
+
+        # Удалить старый файл txt
+        os.remove("C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок/Наклейки на устройства.txt")
+
+    except IOError:
+        print("Не могу сохранить файл Excel")
+
+
+def created_zip_file():
+    """
+    Создать архив с данными
+    :return:
+    """
+    pass
+
 
 
 all_data_from_file = open_eplan_file()  # простыня с данными из файла
 uniq_label_for_printing = delete_fail_and_save_to_file(all_data_from_file)  # уникальные этикетки (готов)
 # save_to_file_txt(uniq_label_for_printing)  # Сохранение в файл txt
-save_to_file_excel(uniq_label_for_printing) # Сохранение в файл Excel
+save_to_file_excel(uniq_label_for_printing)  # Сохранение в файл Excel
