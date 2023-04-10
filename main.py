@@ -3,23 +3,21 @@ import os
 import zipfile
 
 
-def open_eplan_file():
+def open_eplan_file(way: str):
     """
     Функция собирает все данные из txt файла с этикетками
     :return: вернуть простыню с данными
     """
     label = []  # пустой список для этикеток
     try:
-        with open(
-                "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок/Наклейки на устройства.txt",
-                "r") as all_label:
+        with open(way, "r") as all_label:
             for item in all_label:
-                # исключить абзацы
-                if item != '\n':
-                    label.append(item)
 
+                if item != '\n':  # Убрать символ абзаца в конце каждой строки
+                    new_item = item[:-1]
+                    label.append(new_item)
     except IOError:
-        print("Нет файла с этикетка")
+        print("Нет файла с этикетками")
 
     return label
 
@@ -35,17 +33,10 @@ def delete_fail_and_save_to_file(all_data):
         all_label = list(uniq_item)  # обратно в лист
         all_label.sort()  # отсортировать по алфавиту
 
-        uniq_label = []  # лист с уникальными этикетками
-        for item in all_label:
-            new_item = item[:-1]
-            uniq_label.append(new_item)
-
-        return uniq_label
+        return all_label
 
     else:  # если файл пусто, выдать ошибку
         print("Файл пустой")
-
-        return False
 
 
 def save_to_file_txt(label_for_print):
@@ -91,11 +82,16 @@ def created_zip_file():
     Создать архив с данными
     :return:
     """
-    pass
+    data_project = open_eplan_file(
+        "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок/Данные о проекте.txt")
+    zip_name = data_project[2] + ' ' + data_project[1]  # Имя архивного файла
+    folder_path = "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок"  # Папка, из которой создать архив
 
 
-
-all_data_from_file = open_eplan_file()  # простыня с данными из файла
+all_data_from_file = open_eplan_file(
+    "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок/Наклейки на устройства.txt")  # простыня с данными из файла
 uniq_label_for_printing = delete_fail_and_save_to_file(all_data_from_file)  # уникальные этикетки (готов)
 # save_to_file_txt(uniq_label_for_printing)  # Сохранение в файл txt
 save_to_file_excel(uniq_label_for_printing)  # Сохранение в файл Excel
+
+created_zip_file()
