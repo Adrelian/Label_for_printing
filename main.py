@@ -22,7 +22,21 @@ def open_eplan_file(way: str):
     return label
 
 
-def delete_fail_and_save_to_file(all_data):
+def open_all_file_with_marking_wire():
+    """
+    Функция открывает все Excel файлы с маркировками и сохраняет их в один общий файл
+    :return:
+    """
+    path_all_file = "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок" #  Путь к папке с маркировкой
+    all_marking = [] #  Вся маркировка в виде листа
+
+    for item in path_all_file:
+        pass
+
+
+
+
+def delete_file_and_save_to_file(all_data):
     """
     Функция удаляет ошибочные окончания у элементов списка и сохраняет их в файл
     :param all_data: простыня с данными
@@ -90,8 +104,7 @@ def created_zip_file():
 
 all_data_from_file = open_eplan_file(
     "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок/Наклейки на устройства.txt")  # простыня с данными из файла
-uniq_label_for_printing = delete_fail_and_save_to_file(all_data_from_file)  # уникальные этикетки (готов)
+uniq_label_for_printing = delete_file_and_save_to_file(all_data_from_file)  # уникальные этикетки (готов)
 # save_to_file_txt(uniq_label_for_printing)  # Сохранение в файл txt
 save_to_file_excel(uniq_label_for_printing)  # Сохранение в файл Excel
 
-created_zip_file()
