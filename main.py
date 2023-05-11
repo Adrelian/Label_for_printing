@@ -1,6 +1,5 @@
 import openpyxl
 import os
-import zipfile
 
 
 def open_eplan_file(way: str):
@@ -27,13 +26,19 @@ def open_all_file_with_marking_wire():
     Функция открывает все Excel файлы с маркировками и сохраняет их в один общий файл
     :return:
     """
-    path_all_file = "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок" #  Путь к папке с маркировкой
-    all_marking = [] #  Вся маркировка в виде листа
+    path_all_file = "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок"  # Путь к папке с маркировкой
+    prefix = "Маркировка"  # Начальное название файла
+    all_marking = {}  # Вся маркировка в виде словаря
 
-    for item in path_all_file:
-        pass
+    try:
+        for item in os.listdir(path_all_file):
+            if item.startswith(prefix):
+                with open(os.path.join(path_all_file, item), "r", encoding='utf-8') as file:
+                    all_marking[item] = {file.read()}
+    except FileNotFoundError:
+        print("Нет файлов с маркировкой")
 
-
+    print(all_marking)
 
 
 def delete_file_and_save_to_file(all_data):
@@ -107,4 +112,4 @@ all_data_from_file = open_eplan_file(
 uniq_label_for_printing = delete_file_and_save_to_file(all_data_from_file)  # уникальные этикетки (готов)
 # save_to_file_txt(uniq_label_for_printing)  # Сохранение в файл txt
 save_to_file_excel(uniq_label_for_printing)  # Сохранение в файл Excel
-
+open_all_file_with_marking_wire()
