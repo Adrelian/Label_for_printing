@@ -1,6 +1,7 @@
 import openpyxl
 import os
 
+way = "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок"
 
 def open_eplan_file(way: str):
     """
@@ -112,4 +113,4 @@ all_data_from_file = open_eplan_file(
 uniq_label_for_printing = delete_file_and_save_to_file(all_data_from_file)  # уникальные этикетки (готов)
 # save_to_file_txt(uniq_label_for_printing)  # Сохранение в файл txt
 save_to_file_excel(uniq_label_for_printing)  # Сохранение в файл Excel
-open_all_file_with_marking_wire()
+# open_all_file_with_marking_wire()  # ПОКА НЕ РАБОТАЕТ
