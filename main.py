@@ -1,7 +1,9 @@
+# pip3 install pyinstaller
+# pyinstaller -F ИМЯ_ФАЙЛА.py
+
 import openpyxl
 import os
 
-way = "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок"
 
 def open_eplan_file(way: str):
     """
@@ -16,6 +18,9 @@ def open_eplan_file(way: str):
                 if item != '\n':  # Убрать символ абзаца в конце каждой строки
                     new_item = item[:-1]
                     label.append(new_item)
+
+        print("Получил данные из txt файла")  # Комментарий для командной строки
+
     except IOError:
         print("Нет файла с этикетками")
 
@@ -53,6 +58,8 @@ def delete_file_and_save_to_file(all_data):
         all_label = list(uniq_item)  # обратно в лист
         all_label.sort()  # отсортировать по алфавиту
 
+        print("Создал уникальные наклейки на устройства")  # Комментарий для командной строки
+
         return all_label
 
     else:  # если файл пусто, выдать ошибку
@@ -60,6 +67,11 @@ def delete_file_and_save_to_file(all_data):
 
 
 def save_to_file_txt(label_for_print):
+    """
+    Создание txt файла с этикетками (не использую функцию)
+    :param label_for_print: лист с ОУ
+    :return:
+    """
     if label_for_print:
         with open(
                 "C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок/Наклейки на устройства.txt",
@@ -93,6 +105,7 @@ def save_to_file_excel(label_for_print):
         # Удалить старый файл txt
         os.remove("C:/Users/apolo/OneDrive/Рабочий стол/Рабочие проекты/Сборочный участок/Наклейки на устройства.txt")
 
+        print("Сохранил в Excel файл")  # Комментарий для командной строки
     except IOError:
         print("Не могу сохранить файл Excel")
 
@@ -114,3 +127,7 @@ uniq_label_for_printing = delete_file_and_save_to_file(all_data_from_file)  # у
 # save_to_file_txt(uniq_label_for_printing)  # Сохранение в файл txt
 save_to_file_excel(uniq_label_for_printing)  # Сохранение в файл Excel
 # open_all_file_with_marking_wire()  # ПОКА НЕ РАБОТАЕТ
+
+input("Нажмите Enter для выхода...")
+
+
